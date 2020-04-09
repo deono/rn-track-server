@@ -7,12 +7,17 @@ const router = express.Router();
 router.post("/signup", async (req, res) => {
   // handle signup process
   const { email, password } = req.body;
-  // create a new user
-  const user = new User({ email, password });
-  // saving the user is an async operation
-  await user.save();
+  try {
+    // create a new user
+    const user = new User({ email, password });
+    // saving the user is an async operation
+    await user.save();
 
-  res.send("you made a post request to /signup");
+    res.status(200).json({ message: "New user added" });
+  } catch (err) {
+    // handle errors
+    return res.status(422).json({ message: err.message });
+  }
 });
 
 // export the router
