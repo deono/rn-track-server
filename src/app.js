@@ -1,9 +1,11 @@
 require("./models/Users");
+require("./models/Track");
 const express = require("express");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
+const trackRoutes = require("./routes/trackRoutes");
 const requireAuth = require("./middlewares/requireAuth");
 
 // create the express object instance
@@ -12,6 +14,7 @@ const app = express();
 // middleware
 app.use(bodyParser.json());
 app.use(authRoutes);
+app.use(trackRoutes);
 
 // connect to the database
 mongoose.connect(process.env.DB_URI, {
