@@ -4,6 +4,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
+const requireAuth = require("./middlewares/requireAuth");
 
 // create the express object instance
 const app = express();
@@ -26,8 +27,8 @@ mongoose.connection.on("error", err => {
 });
 
 // root route
-app.get("/", (req, res) => {
-  res.send("Hello from the Express server");
+app.get("/", requireAuth, (req, res) => {
+  res.json({ message: `Your email is ${req.user.email}` });
 });
 
 // listen on port 3000
