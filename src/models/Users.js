@@ -41,7 +41,17 @@ userSchema.methods.comparePassword = function(candidatePassword) {
   const user = this;
   // return a promise so the async await syntax can be used
   return new Promise((resolve, reject) => {
-    bcrypt.compare(candidatePassword);
+    bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
+      if (err) {
+        return reject(err);
+      }
+      if (!isMatch) {
+        return reject(false);
+      }
+
+      // passwords did match up, resolve the promise
+      resolve(true);
+    });
   });
 };
 
